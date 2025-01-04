@@ -1,0 +1,9 @@
+!.gitignore
+
+.env
+.idea
+composer.lock
+docker-compose.yml
+/vendor
+/build
+/bootstrap

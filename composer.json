@@ -1,0 +1,46 @@
+{
+    "name": "it-labs/laravel-currency-widget",
+    "description": "Currency widget for laravel",
+    "keywords": ["laravel"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ItLabs\\Widgets\\Currency\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ItLabs\\Widgets\\Currency\\Test\\": "tests"
+        }
+    },
+    "authors": [
+        {
+            "name": "Igor Tkachenko"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.4",
+        "laravel/framework": ">=9",
+        "illuminate/support": ">=9",
+        "illuminate/view": ">=9",
+        "arrilot/laravel-widgets": "*",
+        "spatie/url": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.1",
+        "nunomaduro/larastan": "^2.6"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ItLabs\\Widgets\\Currency\\ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "phpunit"
+    }
+}
