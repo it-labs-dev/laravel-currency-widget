@@ -2,6 +2,9 @@
 
 namespace ItLabs\Widgets\Currency;
 
+use ItLabs\Widgets\Currency\Statement\SessionStorage;
+use ItLabs\Widgets\Currency\Statement\StorageInterface;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -20,8 +23,21 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public function register()
     {
+        app()->singleton(StorageInterface::class, function (){
+            return new SessionStorage();
+        });
+
         app()->singleton(CurrencyStatement::class, function(){
-            return new CurrencyStatement(config('currencies.localeCurrencies', []));
+            return new CurrencyStatement(
+                config('currencies.localeCurrencies', []),
+                app(StorageInterface::class)
+            );
+        });
+
+        app()->singleton(PriceFormatter::class, function(){
+            return new PriceFormatter(
+                app(CurrencyStatement::class)
+            );
         });
     }
 }

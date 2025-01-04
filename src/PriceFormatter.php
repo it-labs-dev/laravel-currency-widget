@@ -4,6 +4,13 @@ namespace ItLabs\Widgets\Currency;
 
 class PriceFormatter
 {
+    protected CurrencyStatement $currencyStatement;
+
+    public function __construct(CurrencyStatement $currencyStatement)
+    {
+        $this->currencyStatement = $currencyStatement;
+    }
+
     /**
      * @param float|PriceInterface $price
      * @param string|null $currency
@@ -22,7 +29,7 @@ class PriceFormatter
     public function getCurrencySymbol(?string $currency = null): string
     {
         if(!$currency){
-            $currency = app(CurrencyStatement::class)->getCurrency();
+            $currency = $this->currencyStatement->getCurrency();
         }
 
         switch (strtoupper($currency)) {

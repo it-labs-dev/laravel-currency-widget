@@ -2,21 +2,26 @@
 
 namespace ItLabs\Widgets\Currency;
 
+use ItLabs\Widgets\Currency\Statement\StorageInterface;
+
 class CurrencyStatement
 {
     protected array $localeCurrencies;
 
     protected array $currencies;
 
-    public function __construct(array $localeCurrencies)
+    protected StorageInterface $storage;
+
+    public function __construct(array $localeCurrencies, StorageInterface $storage)
     {
         $this->localeCurrencies = $localeCurrencies;
         $this->currencies = array_values($localeCurrencies);
+        $this->storage = $storage;
     }
 
     public function getCurrency(): string
     {
-        $currency = session('currency');
+        $currency = $this->storage->get();
 
         if($currency){
             return $currency;
@@ -33,7 +38,7 @@ class CurrencyStatement
             );
         }
 
-        session(['currency' => $currency]);
+        $this->storage->set($currency);
     }
 
     public function trySetCurrency(string $currency): bool
@@ -42,7 +47,7 @@ class CurrencyStatement
             return false;
         }
 
-        session(['currency' => $currency]);
+        $this->storage->set($currency);
 
         return true;
     }
