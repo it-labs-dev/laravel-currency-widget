@@ -9,11 +9,13 @@
     <span>
         {{ $currentCurrencyName }}
     </span>
-    <div>
+    <ul>
         @foreach($currencies as $currency)
-            <a href="{{ $currency['href'] }}">
-                {{ $currency['name'] }}
-            </a>
+            <li>
+                <a href="{{ $currency['href'] }}">
+                    {{ $currency['name'] }}
+                </a>
+            </li>
         @endforeach
-    </div>
+    </ul>
 </div>
