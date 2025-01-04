@@ -7,7 +7,10 @@
     "autoload": {
         "psr-4": {
             "ItLabs\\Widgets\\Currency\\": "src/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
