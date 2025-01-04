@@ -9,7 +9,7 @@
             "ItLabs\\Widgets\\Currency\\": "src/"
         },
         "files": [
-            "app/helpers.php"
+            "helpers.php"
         ]
     },
     "autoload-dev": {
