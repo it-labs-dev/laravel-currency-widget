@@ -7,7 +7,7 @@
 @endphp
 <div @class($classes)>
     <span>
-        {{ $currentCurrencyName }}
+        {!! $currentCurrencyName !!}
     </span>
     <ul>
         @foreach($currencies as $currency)
