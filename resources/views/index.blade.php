@@ -13,7 +13,7 @@
         @foreach($currencies as $currency)
             <li @class(['is-active' => $currency['isActive']])>
                 <a href="{{ $currency['href'] }}">
-                    {{ $currency['name'] }}
+                    {!! $currency['name'] !!}
                 </a>
             </li>
         @endforeach
