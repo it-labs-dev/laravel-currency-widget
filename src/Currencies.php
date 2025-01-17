@@ -2,6 +2,7 @@
 
 namespace ItLabs\Widgets\Currency;
 use Arrilot\Widgets\AbstractWidget;
+use Closure;
 use Illuminate\Support\Arr;
 use Spatie\Url\Url;
 
@@ -18,6 +19,8 @@ class Currencies extends AbstractWidget
 
     protected ?string $currentCurrency;
 
+    protected ?Closure $nameBuilder = null;
+
     /**
      * Treat this method as a controller action.
      * Return view() or other content to display.
@@ -26,6 +29,13 @@ class Currencies extends AbstractWidget
     {
         $this->currencySt = app(CurrencyStatement::class);
         $this->currentCurrency = $this->currencySt->getCurrency();
+        $this->nameBuilder = Arr::get($this->config, 'nameBuilder');
+
+        if(!$this->nameBuilder){
+            $this->nameBuilder = function(string $currency){
+                return $this->defaultBuildName($currency);
+            };
+        }
 
         return view('currencyWidget::index', [
             'currencies' => $this->buildCurrencies(),
@@ -34,7 +44,7 @@ class Currencies extends AbstractWidget
         ]);
     }
 
-    protected function buildName(string $currency): string
+    protected function defaultBuildName(string $currency): string
     {
         $name = __('currencies.' . $currency);
 
@@ -50,6 +60,13 @@ class Currencies extends AbstractWidget
         return $this->buildName($this->currentCurrency);
     }
 
+    protected function buildName(string $currency): string
+    {
+        $callable = $this->nameBuilder;
+
+        return $callable($currency);
+    }
+
     protected function buildCurrencies(): array
     {
         $currencies = [];
@@ -58,14 +75,11 @@ class Currencies extends AbstractWidget
 
         foreach ($this->currencySt->getAvailableCurrencies() as $currency)
         {
-            if($currency === $this->currentCurrency){
-                continue;
-            }
-
             $currencies[] = [
                 'sid' => $currency,
                 'name' => $this->buildName($currency),
-                'href' => $url->withQueryParameters(['currency' => $currency])
+                'href' => $url->withQueryParameters(['currency' => $currency]),
+                'isActive' => $currency === $this->currentCurrency
             ];
         }
 

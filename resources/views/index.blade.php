@@ -11,7 +11,7 @@
     </span>
     <ul>
         @foreach($currencies as $currency)
-            <li>
+            <li @class(['is-active' => $currency['isActive']])>
                 <a href="{{ $currency['href'] }}">
                     {{ $currency['name'] }}
                 </a>
