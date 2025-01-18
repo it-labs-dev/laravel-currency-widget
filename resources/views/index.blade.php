@@ -3,6 +3,7 @@
      * @var string $currentCurrencyName
      * @var array<array> $currencies
      * @var string[] $classes
+     * @var string $itemView
      */
 @endphp
 <div @class($classes)>
@@ -11,11 +12,7 @@
     </span>
     <ul>
         @foreach($currencies as $currency)
-            <li @class(['is-active' => $currency['isActive']])>
-                <a href="{{ $currency['href'] }}">
-                    {!! $currency['name'] !!}
-                </a>
-            </li>
+            @include($itemView, $currency)
         @endforeach
     </ul>
 </div>

@@ -2,24 +2,26 @@
 
 namespace ItLabs\Widgets\Currency;
 use Arrilot\Widgets\AbstractWidget;
-use Closure;
-use Illuminate\Support\Arr;
 use Spatie\Url\Url;
 
 class Currencies extends AbstractWidget
 {
-    /**
-     * The configuration array.
-     *
-     * @var array
-     */
     protected $config = [];
 
     protected ?CurrencyStatement $currencySt;
 
     protected ?string $currentCurrency;
 
-    protected ?Closure $nameBuilder = null;
+    public function __construct(array $config = [])
+    {
+        $this->addConfigDefaults([
+            'view' => 'currencyWidget::index',
+            'itemView' => 'currencyWidget::item',
+            'classes' => []
+        ]);
+
+        parent::__construct($config);
+    }
 
     /**
      * Treat this method as a controller action.
@@ -29,22 +31,15 @@ class Currencies extends AbstractWidget
     {
         $this->currencySt = app(CurrencyStatement::class);
         $this->currentCurrency = $this->currencySt->getCurrency();
-        $this->nameBuilder = Arr::get($this->config, 'nameBuilder');
 
-        if(!$this->nameBuilder){
-            $this->nameBuilder = function(string $currency){
-                return $this->defaultBuildName($currency);
-            };
-        }
-
-        return view('currencyWidget::index', [
+        return view($this->config['view'], $this->config, [
             'currencies' => $this->buildCurrencies(),
-            'currentCurrencyName' => $this->buildCurrentName(),
-            'classes' => Arr::get($this->config, 'classes', [])
+            'currentCurrency' => $this->currentCurrency,
+            'currentCurrencyName' => $this->buildCurrentName()
         ]);
     }
 
-    protected function defaultBuildName(string $currency): string
+    protected function buildName(string $currency): string
     {
         $name = __('currencies.' . $currency);
 
@@ -58,13 +53,6 @@ class Currencies extends AbstractWidget
     protected function buildCurrentName(): string
     {
         return $this->buildName($this->currentCurrency);
-    }
-
-    protected function buildName(string $currency): string
-    {
-        $callable = $this->nameBuilder;
-
-        return $callable($currency);
     }
 
     protected function buildCurrencies(): array
