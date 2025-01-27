@@ -41,6 +41,8 @@ class PriceFormatter
                 return '$';
             case 'PLN':
                 return 'zł';
+            case 'CNY':
+                return '¥';
             default:
                 return $currency;
         }

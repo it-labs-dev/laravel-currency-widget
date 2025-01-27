@@ -1,6 +1,6 @@
 @php
     /**
-     * @var string $currency
+     * @var string $sid
      * @var string $name
      * @var string $href
      * @var string $isActive
